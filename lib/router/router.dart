@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:socially/router/route_names.dart';
+import 'package:socially/views/auth_views/login.dart';
+import 'package:socially/views/auth_views/register.dart';
+import 'package:socially/views/responsive/mobile_layout.dart';
+import 'package:socially/views/responsive/responsive_layout.dart';
+import 'package:socially/views/responsive/web_layout.dart';
+
+class RouterClass {
+  final router = GoRouter(
+    initialLocation: "/register",
+    errorPageBuilder: (context, state) {
+      return MaterialPage(
+        child: Scaffold(
+          body: Column(
+            children: [
+              Center(child: Text("This Page Is Not Found")),
+              ElevatedButton(
+                onPressed: () {
+                  (context).goNamed(RouteNames.mainPage);
+                },
+                child: Text("Go to Home"),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+    routes: [
+      GoRoute(
+        path: "/",
+        name: RouteNames.mainPage,
+        builder: (context, state) {
+          return ResponsiveLayoutScreen(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: "/register",
+        name: RouteNames.register,
+        builder: (context, state) {
+          return RegisterScreen();
+        },
+      ),
+      GoRoute(
+        path: "/login",
+        name: RouteNames.login,
+        builder: (context, state) {
+          return LoginPage();
+        },
+      ),
+    ],
+  );
+}
