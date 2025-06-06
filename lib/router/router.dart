@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socially/router/route_names.dart';
 import 'package:socially/views/auth_views/login.dart';
+import 'package:socially/views/auth_views/mobile_wrapper.dart';
 import 'package:socially/views/auth_views/register.dart';
+import 'package:socially/views/main_views/home_page.dart';
 import 'package:socially/views/responsive/mobile_layout.dart';
 import 'package:socially/views/responsive/responsive_layout.dart';
 import 'package:socially/views/responsive/web_layout.dart';
 
 class RouterClass {
   final router = GoRouter(
-    initialLocation: "/register",
+    initialLocation: "/",
     errorPageBuilder: (context, state) {
       return MaterialPage(
         child: Scaffold(
@@ -51,6 +53,13 @@ class RouterClass {
         name: RouteNames.login,
         builder: (context, state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: "/home",
+        name: RouteNames.homepage,
+        builder: (context, state) {
+          return HomePage();
         },
       ),
     ],

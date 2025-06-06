@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socially/router/route_names.dart';
+import 'package:socially/services/auth/auth_service.dart';
 import 'package:socially/utils/constants/colors.dart';
 import 'package:socially/widgets/reusable/custom_button.dart';
 import 'package:socially/widgets/reusable/custom_input.dart';
@@ -17,6 +18,72 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  //login with email and password
+  Future<void> _signInWithEmailAndPassword(BuildContext context) async {
+    try {
+      await AuthService().signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("User signed in successfully!")));
+
+        //naviate to main page
+        (context).goNamed(RouteNames.homepage);
+      }
+    } catch (err) {
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Error"),
+            content: Text("Error sign in with email and password :$err"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+
+      print("Error login pw in ui :$err");
+    }
+  }
+
+  //sign in with google
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    try {
+      await AuthService().signInWithGoogle();
+      //show snack bar
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("User signed in successfully!")));
+
+        //naviate to main page
+        (context).goNamed(RouteNames.homepage);
+      }
+    } catch (err) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Error"),
+          content: Text("Login Failed ui: $err"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +142,11 @@ class _LoginPageState extends State<LoginPage> {
                     ReusableButton(
                       buttonText: "Log In",
                       width: double.infinity,
-                      onPressed: () {
+                      onPressed: () async {
                         //todo:signup logic
+                        if (_formKey.currentState!.validate()) {
+                          await _signInWithEmailAndPassword(context);
+                        }
                       },
                     ),
                     const SizedBox(height: 30),
@@ -94,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: double.infinity,
                       onPressed: () {
                         //todo:gogle sign in
+                        _signInWithGoogle(context);
                       },
                     ),
                   ],

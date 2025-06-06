@@ -12,10 +12,6 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await dotenv.load(fileName: ".env");
-  // await FirebaseAppCheck.instance.activate(
-  //   androidProvider: AndroidProvider.debug,
-  //   appleProvider: AppleProvider.debug,
-  // );
 
   runApp(const MyApp());
 }

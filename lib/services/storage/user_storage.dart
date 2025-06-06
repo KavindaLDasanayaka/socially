@@ -29,5 +29,6 @@ class UserStorage {
       print("Error saving images:$e");
       return null;
     }
+    return null;
   }
 }

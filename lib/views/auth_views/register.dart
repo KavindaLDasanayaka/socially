@@ -33,12 +33,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   //pick the image
   Future<void> _pickImage(ImageSource source) async {
-    final _picker = ImagePicker();
-    final _pickedImage = await _picker.pickImage(source: source);
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: source);
 
-    if (_pickedImage != null) {
+    if (pickedImage != null) {
       setState(() {
-        _imageFile = File(_pickedImage.path);
+        _imageFile = File(pickedImage.path);
       });
     }
   }
@@ -110,15 +110,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _imageController.text = imageUrl!;
         print(_imageController.text);
       }
-      final userCredential = await AuthService().createUserWithEmailAndPssword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      final userId = userCredential.user?.uid;
 
       final user = UserModel(
-        userId: userId!,
+        userId: "",
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         teamName: _teamNameController.text.trim(),
@@ -130,6 +124,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       await UserService().saveUser(user);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("User Created successfully!")));
+
+        //naviate to main page
+        (context).goNamed(RouteNames.homepage);
+      }
     } catch (err) {
       print("User Saving UI error: $err");
       showDialog(
