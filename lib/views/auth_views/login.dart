@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:socially/router/route_names.dart';
 import 'package:socially/services/auth/auth_service.dart';
 import 'package:socially/utils/constants/colors.dart';
+import 'package:socially/utils/functions/functions.dart';
 import 'package:socially/widgets/reusable/custom_button.dart';
 import 'package:socially/widgets/reusable/custom_input.dart';
 
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
         ).showSnackBar(SnackBar(content: Text("User signed in successfully!")));
 
         //naviate to main page
-        (context).goNamed(RouteNames.homepage);
+        (context).goNamed(RouteNames.mainScreen);
       }
     } catch (err) {
       if (context.mounted) {
@@ -61,13 +62,14 @@ class _LoginPageState extends State<LoginPage> {
       await AuthService().signInWithGoogle();
       //show snack bar
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("User signed in successfully!")));
+        UtilFunctions().showSnackBar(
+          context: context,
+          message: "Login Successfull",
+        );
 
         //naviate to main page
-        (context).goNamed(RouteNames.homepage);
       }
+      (context).goNamed(RouteNames.mainScreen);
     } catch (err) {
       showDialog(
         context: context,

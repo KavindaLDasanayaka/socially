@@ -9,10 +9,10 @@ const primaryColor = Colors.white;
 const secondaryColor = Colors.grey;
 
 //Main app theme colors
-const mainPurpleColor = Color(0xFFC913B9);
-const mainOrangeColor = Color(0xFFF9373F);
+const mainPurpleColor = Color(0xFFC913B9); //Color(0xFF0132D3);
+const mainOrangeColor = Color(0xFFF9373F); //Color(0xFF02B908); //
 const mainYellowColor = Color(0xFFFECD00);
-const mainWhiteColor = Color(0xFFFFFFFF);
+const mainWhiteColor = Colors.white;
 
 //gradient colors
 const Gradient gradientColor = LinearGradient(

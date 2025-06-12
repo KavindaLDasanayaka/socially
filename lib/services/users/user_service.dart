@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -39,11 +41,10 @@ class UserService {
   //get user details by id
   Future<UserModel?> getUserById(String userId) async {
     try {
-      final data = await _userCollection.where(userId) as Map<String, dynamic>;
-      print(data);
-      final UserModel user = UserModel.fromJson(data);
-
-      return user;
+      final doc = await _userCollection.doc(userId).get();
+      if (doc.exists) {
+        return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+      }
     } catch (error) {
       print('Error getting user: $error');
     }

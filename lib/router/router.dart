@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:socially/router/route_names.dart';
 import 'package:socially/views/auth_views/login.dart';
-import 'package:socially/views/auth_views/mobile_wrapper.dart';
+
 import 'package:socially/views/auth_views/register.dart';
+import 'package:socially/views/main_screen.dart';
 import 'package:socially/views/main_views/home_page.dart';
 import 'package:socially/views/responsive/mobile_layout.dart';
 import 'package:socially/views/responsive/responsive_layout.dart';
@@ -60,6 +61,13 @@ class RouterClass {
         name: RouteNames.homepage,
         builder: (context, state) {
           return HomePage();
+        },
+      ),
+      GoRoute(
+        path: "/mainScreen",
+        name: RouteNames.mainScreen,
+        builder: (context, state) {
+          return MainScreen();
         },
       ),
     ],

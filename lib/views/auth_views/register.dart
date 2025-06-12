@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socially/models/user_model.dart';
 import 'package:socially/router/route_names.dart';
-import 'package:socially/services/auth/auth_service.dart';
 import 'package:socially/services/storage/user_storage.dart';
 import 'package:socially/services/users/user_service.dart';
 import 'package:socially/utils/constants/colors.dart';
+import 'package:socially/utils/functions/functions.dart';
 import 'package:socially/widgets/reusable/custom_button.dart';
 import 'package:socially/widgets/reusable/custom_input.dart';
 
@@ -126,9 +126,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await UserService().saveUser(user);
 
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("User Created successfully!")));
+        UtilFunctions().showSnackBar(
+          context: context,
+          message: "User creates successfully!",
+        );
 
         //naviate to main page
         (context).goNamed(RouteNames.homepage);
