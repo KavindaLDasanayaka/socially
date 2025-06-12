@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socially/models/post_model.dart';
 
@@ -31,5 +29,13 @@ class FeedService {
     } catch (err) {
       print("Saving post error : $err");
     }
+  }
+
+  Stream<List<Post>> getPostStream() {
+    return _feedsCollection.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => Post.fromJson(doc.data() as Map<String, dynamic>))
+          .toList(),
+    );
   }
 }

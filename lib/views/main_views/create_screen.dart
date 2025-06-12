@@ -3,17 +3,17 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:socially/models/post_model.dart';
-import 'package:socially/router/route_names.dart';
+
 import 'package:socially/services/feed/feed_service.dart';
 import 'package:socially/services/feed/feed_storage.dart';
 import 'package:socially/services/users/user_service.dart';
 import 'package:socially/utils/constants/colors.dart';
 import 'package:socially/utils/functions/functions.dart';
 import 'package:socially/utils/functions/mood.dart';
-import 'package:socially/views/main_views/home_page.dart';
+
 import 'package:socially/widgets/reusable/custom_button.dart';
 import 'package:socially/widgets/reusable/custom_input.dart';
 
