@@ -4,4 +4,5 @@ class RouteNames {
   static const String login = "/login";
   static const String homepage = "/home";
   static const String mainScreen = "/mainScreen";
+  static const String sinlgeUser = "/sinlgeUser";
 }

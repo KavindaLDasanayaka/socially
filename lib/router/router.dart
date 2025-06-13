@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:socially/models/user_model.dart';
 import 'package:socially/router/route_names.dart';
 import 'package:socially/views/auth_views/login.dart';
 
 import 'package:socially/views/auth_views/register.dart';
 import 'package:socially/views/main_screen.dart';
 import 'package:socially/views/main_views/home_page.dart';
+import 'package:socially/views/main_views/single_user_screen.dart';
 import 'package:socially/views/responsive/mobile_layout.dart';
 import 'package:socially/views/responsive/responsive_layout.dart';
 import 'package:socially/views/responsive/web_layout.dart';
@@ -68,6 +70,14 @@ class RouterClass {
         name: RouteNames.mainScreen,
         builder: (context, state) {
           return MainScreen();
+        },
+      ),
+      GoRoute(
+        path: "/singleUser",
+        name: RouteNames.sinlgeUser,
+        builder: (context, state) {
+          final UserModel user = state.extra as UserModel;
+          return SingleUserScreen(user: user);
         },
       ),
     ],

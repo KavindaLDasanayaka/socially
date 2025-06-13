@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:socially/models/post_model.dart';
+import 'package:socially/services/feed/feed_service.dart';
+import 'package:socially/services/feed/feed_storage.dart';
 
 import 'package:socially/utils/constants/app_constants.dart';
 import 'package:socially/utils/constants/colors.dart';
@@ -8,15 +10,11 @@ import 'package:socially/utils/functions/mood.dart';
 
 class PostWidget extends StatefulWidget {
   final Post post;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
   final String currentUserId;
 
   const PostWidget({
     super.key,
     required this.post,
-    required this.onEdit,
-    required this.onDelete,
     required this.currentUserId,
   });
 
@@ -25,6 +23,81 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
+  bool _isLiked = false;
+
+  //check if the user has liked the post
+  Future<void> _checkIfUserLiked() async {
+    final bool hasLiked = await FeedService().hasUserLikedPost(
+      postId: widget.post.postId,
+      userId: widget.currentUserId,
+    );
+    setState(() {
+      _isLiked = hasLiked;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfUserLiked();
+  }
+
+  //method to like and dislike a post
+  void _likedOrDisLikePost() async {
+    try {
+      if (_isLiked) {
+        await FeedService().disLikePost(
+          postId: widget.post.postId,
+          userId: widget.currentUserId,
+        );
+        setState(() {
+          _isLiked = false;
+        });
+      } else {
+        await FeedService().likePost(
+          postId: widget.post.postId,
+          userId: widget.currentUserId,
+        );
+        setState(() {
+          _isLiked = true;
+        });
+      }
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
+  //post deleting method
+  Future<void> deletePost(
+    String imageUrl,
+    String postId,
+    BuildContext context,
+  ) async {
+    try {
+      final String publicId = FeedStorage().extractPublicIdFromUrl(imageUrl);
+
+      if (publicId != null) {
+        Navigator.of(context).pop();
+        await FeedService().deletePost(postId: postId, publicId: publicId);
+      } else {}
+    } catch (err) {
+      print("error post deleting ui :$err");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Error"),
+          content: Text("Post deleting error"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat(
@@ -125,8 +198,10 @@ class _PostWidgetState extends State<PostWidget> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.favorite_border_outlined),
+                    onPressed: _likedOrDisLikePost,
+                    icon: _isLiked
+                        ? Icon(Icons.favorite, color: mainPurpleColor)
+                        : Icon(Icons.favorite_border_outlined),
                   ),
                   const SizedBox(width: 5),
                   Text(
@@ -163,7 +238,13 @@ class _PostWidgetState extends State<PostWidget> {
                                 context: context,
                                 icon: Icons.delete,
                                 text: "Delete",
-                                onTap: () {},
+                                onTap: () {
+                                  deletePost(
+                                    widget.post.postImage,
+                                    widget.post.postId,
+                                    context,
+                                  );
+                                },
                               ),
                             ],
                           ),

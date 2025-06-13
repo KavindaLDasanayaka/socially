@@ -30,6 +30,8 @@ class HomePage extends StatelessWidget {
 
           final List<Post> posts = snapshot.data!;
 
+          posts.sort((a, b) => b.datePublished.compareTo(a.datePublished));
+
           return ListView.builder(
             itemCount: posts.length,
             shrinkWrap: true,
@@ -39,8 +41,6 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: PostWidget(
                   post: post,
-                  onEdit: () {},
-                  onDelete: () {},
                   currentUserId: FirebaseAuth.instance.currentUser!.uid,
                 ),
               );
