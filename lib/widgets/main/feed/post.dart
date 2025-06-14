@@ -76,10 +76,8 @@ class _PostWidgetState extends State<PostWidget> {
     try {
       final String publicId = FeedStorage().extractPublicIdFromUrl(imageUrl);
 
-      if (publicId != null) {
-        Navigator.of(context).pop();
-        await FeedService().deletePost(postId: postId, publicId: publicId);
-      } else {}
+      Navigator.of(context).pop();
+      await FeedService().deletePost(postId: postId, publicId: publicId);
     } catch (err) {
       print("error post deleting ui :$err");
       showDialog(
