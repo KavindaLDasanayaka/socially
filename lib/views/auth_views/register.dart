@@ -119,11 +119,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         imageUrl: _imageController.text,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        password: _passwordController.text,
+        // password: _passwordController.text,
         followers: 0,
       );
+      final password = _passwordController.text;
 
-      await UserService().saveUser(user);
+      await UserService().saveUser(user, password);
 
       if (context.mounted) {
         UtilFunctions().showSnackBar(

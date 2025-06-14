@@ -8,7 +8,7 @@ class UserModel {
   final String imageUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final String password;
+  // final String password;
   final int followers;
 
   UserModel({
@@ -19,7 +19,7 @@ class UserModel {
     required this.imageUrl,
     required this.createdAt,
     required this.updatedAt,
-    required this.password,
+    // required this.password,
     required this.followers,
   });
 
@@ -33,7 +33,7 @@ class UserModel {
       imageUrl: json["imageUrl"] ?? "",
       createdAt: (json["createdAt"] as Timestamp).toDate(),
       updatedAt: (json["updatedAt"] as Timestamp).toDate(),
-      password: json["password"] ?? "",
+      // password: json["password"] ?? "",
       followers: json["followers"].toInt() ?? 0,
     );
   }
@@ -48,7 +48,7 @@ class UserModel {
       "imageUrl": imageUrl,
       "createdAt": createdAt,
       "updatedAt": updatedAt,
-      "password": password,
+      // "password": password,
       "followers": followers,
     };
   }

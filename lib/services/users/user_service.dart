@@ -11,11 +11,11 @@ class UserService {
       .collection("users");
 
   //save user method
-  Future<void> saveUser(UserModel user) async {
+  Future<void> saveUser(UserModel user, String password) async {
     try {
       final userCredential = await AuthService().createUserWithEmailAndPssword(
         email: user.email,
-        password: user.password,
+        password: password,
       );
       // Retrieve the user ID from the created user
       final userId = userCredential.user?.uid;
@@ -138,7 +138,7 @@ class UserService {
           final data = unfollowedUserDoc.data() as Map<String, dynamic>;
           final currentCount = data['followersCount'] ?? 0;
           transaction.update(unfollowedUserRef, {
-            'followersCount': currentCount - 1,
+            'followersCount': currentCount > 0 ? currentCount - 1 : 0,
           });
         }
       });
@@ -151,7 +151,7 @@ class UserService {
           final data = currentUserDoc.data() as Map<String, dynamic>;
           final currentCount = data['followingCount'] ?? 0;
           transaction.update(currentUserRef, {
-            'followingCount': currentCount - 1,
+            'followingCount': currentCount > 0 ? currentCount - 1 : 0,
           });
         }
       });

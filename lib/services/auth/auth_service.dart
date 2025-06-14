@@ -99,7 +99,7 @@ class AuthService {
           imageUrl: user.photoURL ?? "",
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
-          password: "",
+          // password: "",
           followers: 0,
         );
 
